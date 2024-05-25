@@ -24,7 +24,7 @@ namespace Fiorello_Db.Controllers
         {
             var basketJson = _accessor.HttpContext.Request.Cookies["basket"];
             if (basketJson == null) return View(new List<CartVM>());
-            List<BasketVM> basketProducts = JsonConvert.DeserializeObject<List<BasketVM>>(_accessor.HttpContext.Request.Cookies["basket"]);
+            List<CartVM> basketProducts = JsonConvert.DeserializeObject<List<CartVM>>(_accessor.HttpContext.Request.Cookies["basket"]);
 
             var cartProducts = new List<CartVM>();
 
@@ -58,7 +58,7 @@ namespace Fiorello_Db.Controllers
         {
             if (id is null) return BadRequest();
 
-            List<BasketVM> basketproducts = JsonConvert.DeserializeObject<List<BasketVM>>(_accessor.HttpContext.Request.Cookies["basket"]);
+            List<CartVM> basketproducts = JsonConvert.DeserializeObject<List<CartVM>>(_accessor.HttpContext.Request.Cookies["basket"]);
             if (basketproducts == null) return NotFound();
             var product = basketproducts.FirstOrDefault(m => m.Id == id);
             basketproducts.Remove(product);
@@ -70,7 +70,7 @@ namespace Fiorello_Db.Controllers
         [HttpPost]
         public async Task<IActionResult> IncrementCounterProduct(int? id)
         {
-            List<BasketVM> basket = JsonConvert.DeserializeObject<List<BasketVM>>(_accessor.HttpContext.Request.Cookies["basket"]);
+            List<CartVM> basket = JsonConvert.DeserializeObject<List<CartVM>>(_accessor.HttpContext.Request.Cookies["basket"]);
             var product = basket.FirstOrDefault(m => m.Id == id);
             product.Count -= 1;
             if (product.Count == 0)
@@ -88,7 +88,7 @@ namespace Fiorello_Db.Controllers
         [HttpPost]
         public async Task<IActionResult> ReductionCounterProduct(int? id)
         {
-            List<BasketVM> basket = JsonConvert.DeserializeObject<List<BasketVM>>(_accessor.HttpContext.Request.Cookies["basket"]);
+            List<CartVM> basket = JsonConvert.DeserializeObject<List<CartVM>>(_accessor.HttpContext.Request.Cookies["basket"]);
             var product = basket.FirstOrDefault(m => m.Id == id);
             product.Count += 1;
             _accessor.HttpContext.Response.Cookies.Append("basket", JsonConvert.SerializeObject(basket));
